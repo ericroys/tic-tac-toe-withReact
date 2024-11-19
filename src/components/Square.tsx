@@ -20,7 +20,7 @@ export const Cell = ({ id }: Props) => {
   let dotted = !gameOver && !isSelected ? ' hover:border-dotted' : '';
 
   const onClick = async () => {
-    if (gameOver) return;
+    if (gameOver || square.isSelected) return;
     dispatch(MovePlayer({ id: id, player: playingAs }));
   };
 
