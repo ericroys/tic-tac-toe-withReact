@@ -10,7 +10,7 @@ import {
 } from '../model/reducers';
 import { useAppDispatch, useAppSelector } from '../store/storeHooks';
 import { Cell } from './Square';
-import { CloseModal } from './modalClose';
+// import { CloseModal } from './modalClose';
 
 export const Board = () => {
   const dispatch = useAppDispatch();
@@ -55,7 +55,7 @@ export const Board = () => {
           <Cell key={s.id} id={s.id} />
         ))}
       </div>
-      <CloseModal isOpen={isOpen} onClose={closeModal} children={<></>} />
+      {/* <CloseModal isOpen={isOpen} onClose={closeModal} children={<></>} /> */}
     </>
   );
 };
