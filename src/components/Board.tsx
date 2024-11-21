@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import {
   SelectNextMove,
   MoveNpc,
@@ -20,10 +20,10 @@ export const Board = () => {
   const myPlayer = useAppSelector(SelectPlayingAs);
   const status = useAppSelector(SelectStatus);
   //our modal/dialog management start with closed
-  const [isOpen, setIsOpen] = useState<boolean>(false);
-  const closeModal = () => {
-    setIsOpen(false);
-  };
+  // const [isOpen, setIsOpen] = useState<boolean>(false);
+  // const closeModal = () => {
+  //   setIsOpen(false);
+  // };
 
   useEffect(() => {
     async function nextMoving() {
@@ -43,12 +43,12 @@ export const Board = () => {
       <button className='bg-blue' onClick={() => dispatch(reset())}>
         Reset
       </button>
-      <button
+      {/* <button
         onClick={() => {
           setIsOpen(true);
         }}>
         Options
-      </button>
+      </button> */}
       <div>It's player {nextMove === 'x' ? 'X' : 'O'}'s turn!</div>
       <div className='bg-black drop-shadow-custom-m-gray flex flex-wrap w-1/3'>
         {squares.map((s) => (
