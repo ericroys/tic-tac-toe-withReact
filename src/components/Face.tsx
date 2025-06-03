@@ -9,8 +9,8 @@ export type Props = {
 };
 
 export const Face = ({ isWin, player }: Props) => {
-  let win = isWin ? ' text-redish ' : '';
-  let params = {
+  const win = isWin ? ' text-redish ' : '';
+  const params = {
     className: 'h-fit w-fit m-3' + win,
     size: 100,
   };

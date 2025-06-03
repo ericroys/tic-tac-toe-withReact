@@ -29,3 +29,10 @@ export type WinResponse = {
   winner: Players;
   hasWinner: boolean;
 };
+
+export type Settings = Setting[]
+
+export type Setting = {
+  key: string;
+  value?: string | number | undefined;
+};

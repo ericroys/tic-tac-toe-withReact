@@ -15,7 +15,7 @@ import { RootState } from '../store';
 import { Game } from './game';
 
 const getSquares = () => {
-  let s: Square[] = [];
+  const s: Square[] = [];
   for (let i = 0; i < 9; i++) {
     s.push({
       id: i,
@@ -40,7 +40,7 @@ export const gameReducer = createSlice({
   initialState: initialState,
   reducers: {
     move: (state, action: PayloadAction<Move>) => {
-      let { player, id } = action.payload;
+      const { player, id } = action.payload;
       state.nextTurn = player === 'o' ? 'x' : 'o';
       state.squares.map((s) => {
         if (s.id === id) {
@@ -62,12 +62,13 @@ export const gameReducer = createSlice({
       })
       .addCase(calcWinner.fulfilled, (state, action) => {
         if (action.payload) {
-          let { hasWinner, ids, winner } = action.payload;
+          const { hasWinner, ids, winner } = action.payload;
           state.status = 'calcwin_complete';
           if (hasWinner) {
             state.winner = winner;
             state.squares = [
               ...state.squares.map((s) => {
+                // eslint-disable-next-line @typescript-eslint/no-unused-expressions
                 ids?.includes(s.id)
                   ? (s.isWinner = true)
                   : (s.isWinner = false);
@@ -106,7 +107,7 @@ const selectBySquareId = (_state: RootState, id: number) => id;
 export const SelectSquareById = createSelector(
   [SelectAllSquares, selectBySquareId],
   (squares, id) => {
-    let res = squares.filter((i) => {
+    const res = squares.filter((i) => {
       return i.id === id;
     });
     return res && res.length > 0 ? res[0] : undefined;
@@ -126,7 +127,7 @@ export const calcWinner = createAsyncThunk<
   { state: RootState }
 >('game/calculatewin', async (_, { getState }) => {
   const { squares } = getState().reducer.game;
-  let winner = new Game(squares).GetWinner();
+  const winner = new Game(squares).GetWinner();
   return winner;
 });
 
@@ -134,7 +135,7 @@ export const NpcNextMove = createAsyncThunk<number, void, { state: RootState }>(
   'game/npcnextmove',
   async (_, { getState }) => {
     const { squares } = getState().reducer.game;
-    let m = new Game(squares).GetNextNpcMove();
+    const m = new Game(squares).GetNextNpcMove();
     return m;
   }
 );
@@ -150,8 +151,8 @@ export const MovePlayer = createAsyncThunk<void, Move, { state: RootState }>(
 export const MoveNpc = createAsyncThunk<void, void, { state: RootState }>(
   'game/movenpc',
   async (_, { dispatch, getState }) => {
-    let moveid = await dispatch(NpcNextMove());
-    let player: SelectablePlayers =
+    const moveid = await dispatch(NpcNextMove());
+    const player: SelectablePlayers =
       getState().reducer.game.playingAs === 'o' ? 'x' : 'o';
     dispatch(move({ id: moveid.payload as number, player: player }));
     await dispatch(calcWinner());

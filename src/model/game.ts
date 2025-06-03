@@ -13,7 +13,7 @@ export class Game {
     return this.#squares;
   }
   GetNextNpcMove(): number {
-    let avail: number[] = [];
+    const avail: number[] = [];
     let res = -99;
     this.#squares.forEach((s) => {
       if (!s.isSelected) avail.push(s.id);
@@ -33,7 +33,7 @@ export class Game {
   }
 
   SetPlayer(player: Players, id: number) {
-    let match = this.#squares.find((s) => s.id === id);
+    const match = this.#squares.find((s) => s.id === id);
     if (match) {
       match.player = player;
       match.isSelected = true;
@@ -42,6 +42,7 @@ export class Game {
   GetWinner(): WinResponse {
     let res: WinResponse = { hasWinner: false, winner: 'none' };
     let x = null;
+    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
     (x = this.#GetWinRows()).hasWinner
       ? (res = x)
       : (x = this.#GetWinColumns()).hasWinner
@@ -50,7 +51,7 @@ export class Game {
     return res;
   }
   #GetWinRows(): WinResponse {
-    let res: WinResponse = { hasWinner: false, winner: 'none' };
+    const res: WinResponse = { hasWinner: false, winner: 'none' };
     let t: number[] = [];
 
     this.#squares.forEach((s) => {
@@ -79,16 +80,16 @@ export class Game {
     return res;
   }
   #GetWinColumns(): WinResponse {
-    let res: WinResponse = { hasWinner: false, winner: 'none' };
+    const res: WinResponse = { hasWinner: false, winner: 'none' };
     let t = 0;
     for (let i = 0; i < 3; i++) {
       if (res.hasWinner) break;
-      let cols = this.#GetColumn(i);
+      const cols = this.#GetColumn(i);
       if (cols) {
         cols.forEach(
           (c) => (t += c.player === 'none' ? 0 : c.player === 'x' ? 3 : 4)
         );
-        let ids = (res.ids = cols.map((n) => n.id));
+        const ids = (res.ids = cols.map((n) => n.id));
         if (t === 9) {
           res.hasWinner = true;
           res.winner = 'x';
@@ -107,7 +108,7 @@ export class Game {
 
   #GetColumn(col: number): Square[] | undefined {
     if (!this.#squares || this.#squares.length < 1) return undefined;
-    let s = this.#squares.length / 3;
+    const s = this.#squares.length / 3;
     if (col > s) return undefined;
     return [this.#squares[col], this.#squares[col + 3], this.#squares[col + 6]];
   }
@@ -119,9 +120,9 @@ export class Game {
     ];
   }
   #GetDiagonalWin(): WinResponse {
-    let res: WinResponse = { hasWinner: false, winner: 'none' };
+    const res: WinResponse = { hasWinner: false, winner: 'none' };
 
-    let diagonals = this.#GetDiagonal();
+    const diagonals = this.#GetDiagonal();
 
     diagonals.forEach((d) => {
       if (res.hasWinner) return;
@@ -130,7 +131,7 @@ export class Game {
         (item) =>
           (t += item.player === 'none' ? 0 : item.player === 'x' ? 3 : 4)
       );
-      let ids = (res.ids = d.map((n) => n.id));
+      const ids = (res.ids = d.map((n) => n.id));
       if (t === 9) {
         res.hasWinner = true;
         res.winner = 'x';

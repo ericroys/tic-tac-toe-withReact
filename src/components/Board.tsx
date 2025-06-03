@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import {
   SelectNextMove,
   MoveNpc,
@@ -6,16 +6,20 @@ import {
   SelectAllSquares,
   SelectPlayingAs,
   SelectStatus,
-} from '../model/reducers';
+} from '../model/gameReducer';
 import { useAppDispatch, useAppSelector } from '../store/storeHooks';
 import { Cell } from './Square';
+import { SelectAllSettings } from '../model/settingsReducer';
 
 export const Board = () => {
   const dispatch = useAppDispatch();
   const squares = useAppSelector(SelectAllSquares);
   const nextMove = useAppSelector(SelectNextMove);
   const myPlayer = useAppSelector(SelectPlayingAs);
+  const settings = useAppSelector(SelectAllSettings);
+  //TODO Use the settings from the store
   const status = useAppSelector(SelectStatus);
+  const [color, setColor] = useState<string>('#652020');
 
   useEffect(() => {
     async function nextMoving() {
@@ -27,17 +31,18 @@ export const Board = () => {
       }
     }
     nextMoving();
-  }, [nextMove, myPlayer, MoveNpc, status]);
+  }, [nextMove, myPlayer, dispatch, status]);
   return (
     <>
-      {/* <button onClick={() => dispatch(npcMove)}>BOB</button> */}
-      <button className='bg-blue' onClick={() => dispatch(reset())}>
+      <button
+        style={{ backgroundColor: color }}
+        onClick={() => dispatch(reset())}>
         Reset
       </button>
-      <div>It's player {nextMove === 'x' ? 'X' : 'O'}'s turn!</div>
-      <div className='bg-black drop-shadow-custom-m-gray flex flex-wrap w-1/3'>
+      <div
+        className={`${color} drop-shadow-custom-m-gray flex flex-wrap w-1/3`}>
         {squares.map((s) => (
-          <Cell key={s.id} id={s.id} />
+          <Cell key={s.id} id={s.id} color={color} />
         ))}
       </div>
     </>
