@@ -9,7 +9,7 @@ export const WINCOLOR = 'winColor';
 
 export const DefaultSettings : Setting[] = 
 [
-    {key: BORDERCOLOR, value: '#ffffff'},
+    {key: BORDERCOLOR, value: '#000000'},
     {key: BOARDCOLOR, value: '#ffffff'},
     {key: CELLCOLOR, value: '#ffffff'}, 
     {key: PLAYEROCOLOR, value: '#000000'},

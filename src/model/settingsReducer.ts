@@ -1,8 +1,9 @@
 import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '../store';
 import { Setting, Settings } from '../types';
+import { DefaultSettings } from '../data/default_settings';
 
-const initialState: Settings = [];
+const initialState: Settings = [...DefaultSettings];
 
 export const settingsReducer = createSlice({
   name: 'settings',
