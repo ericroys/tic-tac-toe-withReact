@@ -15,8 +15,6 @@ export const Board = () => {
   const squares = useAppSelector(SelectAllSquares);
   const nextMove = useAppSelector(SelectNextMove);
   const myPlayer = useAppSelector(SelectPlayingAs);
-
-  //TODO Use the settings from the store
   const status = useAppSelector(SelectStatus);
 
   useEffect(() => {
