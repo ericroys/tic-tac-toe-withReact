@@ -11,8 +11,9 @@ export const settingsReducer = createSlice({
     setSetting: (state, action: PayloadAction<Setting>) => {
       const setting = action.payload;
       if (!setting) return;
-      console.log(JSON.stringify(setting));
-      return [...state, setting];
+      const idx = state.findIndex((i) => i.key === setting.key );
+      if(idx > -1) state[idx] = setting;
+      else state.push(setting);
     },
   },
 });

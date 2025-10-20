@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import {
   SelectNextMove,
   MoveNpc,
@@ -9,17 +9,15 @@ import {
 } from '../model/gameReducer';
 import { useAppDispatch, useAppSelector } from '../store/storeHooks';
 import { Cell } from './Square';
-import { SelectAllSettings } from '../model/settingsReducer';
 
 export const Board = () => {
   const dispatch = useAppDispatch();
   const squares = useAppSelector(SelectAllSquares);
   const nextMove = useAppSelector(SelectNextMove);
   const myPlayer = useAppSelector(SelectPlayingAs);
-  const settings = useAppSelector(SelectAllSettings);
+
   //TODO Use the settings from the store
   const status = useAppSelector(SelectStatus);
-  const [color, setColor] = useState<string>('#652020');
 
   useEffect(() => {
     async function nextMoving() {
@@ -35,14 +33,14 @@ export const Board = () => {
   return (
     <>
       <button
-        style={{ backgroundColor: color }}
+        style={{ backgroundColor: 'white' }}
         onClick={() => dispatch(reset())}>
         Reset
       </button>
       <div
-        className={`${color} drop-shadow-custom-m-gray flex flex-wrap w-1/3`}>
+        className={`drop-shadow-custom-m-gray flex flex-wrap w-1/3`}>
         {squares.map((s) => (
-          <Cell key={s.id} id={s.id} color={color} />
+          <Cell key={s.id} id={s.id}/>
         ))}
       </div>
     </>

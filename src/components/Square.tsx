@@ -1,3 +1,4 @@
+import { BORDERCOLOR, CELLCOLOR } from '../data/default_settings';
 import {
   GameOver,
   SelectSquareById,
@@ -15,9 +16,14 @@ export const Cell = ({ id }: Props) => {
   const dispatch = useAppDispatch();
   const gameOver = useAppSelector(GameOver);
   const square = useAppSelector((state) => SelectSquareById(state, id));
-  const border = useAppSelector((state) => SelectSettingByKey(state, 'borderColor'));
+  const border = useAppSelector((state) =>
+    SelectSettingByKey(state, BORDERCOLOR)
+  );
+  const boardColor = useAppSelector((state) =>
+    SelectSettingByKey(state, CELLCOLOR)
+  );
   const playingAs = useAppSelector(SelectPlayingAs);
-  
+
   if (!square) return;
   const { player, isSelected, isWinner } = square;
   const dotted = !gameOver && !isSelected ? ' hover:border-dotted' : '';
@@ -33,8 +39,11 @@ export const Cell = ({ id }: Props) => {
       className={`flex w-1/3 min-w-1/3 justify-center items-center content-center
         text-center border-4 ${dotted}
         `}
-      style={{ borderColor: String(border) }}>
-      <Face isWin={isWinner} player={player} />
+      style={{
+        borderColor: String(border),
+        backgroundColor: String(boardColor),
+      }}>
+      <Face key={id} isWin={isWinner} player={player} />
     </div>
   );
 };

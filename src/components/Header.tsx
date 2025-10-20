@@ -2,7 +2,7 @@ import { CiSettings } from 'react-icons/ci';
 
 import StyledIconText from '../lib/styledIconText';
 import { useState } from 'react';
-import { Settings } from './Settings';
+import { SettingsComponent } from './Settings';
 
 /*
   Header Object for the app currently consisting of
@@ -27,8 +27,11 @@ export const Header = () => {
           onClick={() => setIsOpen(true)}
         />
       </div>
-      {/* <Settings isOpen={isOpen} onClose={closeModal} children={<></>} /> */}
-      <Settings isOpen={shouldDisplay} onClose={closeModal} children={<></>} />
+      <SettingsComponent
+        isOpen={shouldDisplay}
+        onClose={closeModal}
+        children={<></>}
+      />
     </>
   );
 };
