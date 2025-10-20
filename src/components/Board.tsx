@@ -7,8 +7,10 @@ import {
   SelectPlayingAs,
   SelectStatus,
 } from '../model/gameReducer';
+
 import { useAppDispatch, useAppSelector } from '../store/storeHooks';
 import { Cell } from './Square';
+// import { CloseModal } from './modalClose';
 
 export const Board = () => {
   const dispatch = useAppDispatch();
@@ -28,6 +30,7 @@ export const Board = () => {
     }
     nextMoving();
   }, [nextMove, myPlayer, dispatch, status]);
+
   return (
     <>
       <button
@@ -37,10 +40,12 @@ export const Board = () => {
       </button>
       <div
         className={`drop-shadow-custom-m-gray flex flex-wrap w-1/3`}>
+
         {squares.map((s) => (
           <Cell key={s.id} id={s.id}/>
         ))}
       </div>
+      {/* <CloseModal isOpen={isOpen} onClose={closeModal} children={<></>} /> */}
     </>
   );
 };
