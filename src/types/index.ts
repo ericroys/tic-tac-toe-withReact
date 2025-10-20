@@ -1,3 +1,5 @@
+import { HTMLInputTypeAttribute } from "react";
+
 export type PlayerX = 'x';
 export type PlayerO = 'o';
 export type PlayerNone = 'none';
@@ -29,3 +31,19 @@ export type WinResponse = {
   winner: Players;
   hasWinner: boolean;
 };
+
+export type Setting = {
+  key: string;
+  value?: string | number | undefined;
+};
+
+export type Settings = Setting[]
+
+export type SettingMeta = {
+  id: string;
+  label: string;
+  inputType: HTMLInputTypeAttribute
+};
+
+export type SettingsMeta = SettingMeta[];
+
