@@ -5,7 +5,7 @@ import React from 'react';
 import { useForm } from 'react-hook-form';
 import { useAppDispatch, useAppSelector } from '../store/storeHooks';
 import { SelectAllSettings, setSetting } from '../model/settingsReducer';
-import { SettingsFields } from '../data/default_settings';
+import { DefaultSettings, SettingsFields } from '../data/default_settings';
 import {
   lblClass,
   inputclass,
@@ -48,6 +48,11 @@ export const SettingsComponent = ({ isOpen, onClose, children }: Props) => {
     }
   };
 
+  const getDefaultSetting = (key: string) =>{
+    const t = DefaultSettings.find(s => s.key === key)
+    return t ? t.value : '';
+  }
+
   const getSetting = (key: string) => {
     if (!parameters) return null;
     const res = parameters.filter((i) => i.key === key);
@@ -87,7 +92,7 @@ export const SettingsComponent = ({ isOpen, onClose, children }: Props) => {
                     {f.label}
                   </label>
                   <input
-                    defaultValue={getSetting(f.id) || ''}
+                    defaultValue={getSetting(f.id) || getDefaultSetting(f.id)}
                     key={'i' + i}
                     type={f.inputType}
                     id={f.id}

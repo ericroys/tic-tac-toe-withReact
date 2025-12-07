@@ -16,8 +16,7 @@ export const Header = () => {
   };
   return (
     <>
-      <div className='bg-gray flex h-30 items-center justify-between shadow-md shadow-black'>
-        <div className='flex w-1/2'></div>
+      <div className='bg-gray flex h-30 justify-center align-center shadow-md shadow-black'>
         {/* <CiSettings /> */}
         <StyledIconText
           icon={CiSettings}
