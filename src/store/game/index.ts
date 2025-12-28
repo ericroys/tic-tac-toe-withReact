@@ -1,5 +1,5 @@
 import { configureStore, combineReducers } from '@reduxjs/toolkit';
-import { gameReducer } from '../model/gameReducer';
+import { gameReducer } from '../reducers/gameReducer';
 import storage from 'redux-persist/lib/storage';
 import {
   FLUSH,
@@ -10,7 +10,8 @@ import {
   REHYDRATE,
   persistReducer,
 } from 'redux-persist';
-import { settingsReducer } from '../model/settingsReducer';
+import { settingsReducer } from '../reducers/settingsReducer';
+import { fileReducer } from '../reducers/fileReducer';
 
 const persistConfig = {
   key: 'root',
@@ -21,6 +22,7 @@ const persistConfig = {
 const rootReducers = combineReducers({
   game: gameReducer.reducer,
   settings: settingsReducer.reducer,
+  files: fileReducer.reducer
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducers);
