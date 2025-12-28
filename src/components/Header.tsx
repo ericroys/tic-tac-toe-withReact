@@ -3,6 +3,7 @@ import { CiSettings } from 'react-icons/ci';
 import StyledIconText from '../lib/styledIconText';
 import { useState } from 'react';
 import { SettingsComponent } from './Settings';
+import { defaultStyleIconText } from '../styling/styles';
 
 /*
   Header Object for the app currently consisting of
@@ -21,8 +22,7 @@ export const Header = () => {
         <StyledIconText
           icon={CiSettings}
           text='Settings'
-          iconClass='text-white'
-          txtClass='text-white pr-5 drop-shadow-custom-m-gray cursor-pointer'
+          {...defaultStyleIconText}
           onClick={() => setIsOpen(true)}
         />
       </div>

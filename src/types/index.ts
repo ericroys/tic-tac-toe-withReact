@@ -47,3 +47,16 @@ export type SettingMeta = {
 
 export type SettingsMeta = SettingMeta[];
 
+export type FileMeta = {
+  id: string;
+  updated: number | undefined;
+}
+
+export type FileInput = {
+  id: string;
+  file: File | undefined;
+}
+
+export type FileMetaState = FileMeta[];
+
+

@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import {
   SelectNextMove,
   MoveNpc,
@@ -6,20 +6,33 @@ import {
   SelectAllSquares,
   SelectPlayingAs,
   SelectStatus,
-} from '../model/gameReducer';
+} from '../store/reducers/gameReducer';
 import { PiRecycleLight } from 'react-icons/pi';
-
-import { useAppDispatch, useAppSelector } from '../store/storeHooks';
+import { useAppDispatch, useAppSelector } from '../store/game/storeHooks';
 import { Cell } from './Square';
 import StyledIconText from '../lib/styledIconText';
-// import { CloseModal } from './modalClose';
+import { BOARDBACKGROUND } from '../data/default_settings';
+import { defaultStyleIconText } from '../styling/styles';
+import { dbGetFile } from '../controller/fileController';
+import { SelectFileUpdated } from '../store/reducers/fileReducer';
 
 export const Board = () => {
+  const [image, setImage] = useState<string | undefined>();
   const dispatch = useAppDispatch();
   const squares = useAppSelector(SelectAllSquares);
   const nextMove = useAppSelector(SelectNextMove);
   const myPlayer = useAppSelector(SelectPlayingAs);
   const status = useAppSelector(SelectStatus);
+  const backgroundUpdate = useAppSelector((state) => 
+    SelectFileUpdated(state, BOARDBACKGROUND));
+
+  useEffect(()=> {
+    async function getBackground(){
+      const f = await dbGetFile(BOARDBACKGROUND);
+      setImage(f ? URL.createObjectURL(f) : undefined);
+    }
+    getBackground();
+  }, [setImage, backgroundUpdate]);
 
   useEffect(() => {
     async function nextMoving() {
@@ -37,21 +50,33 @@ export const Board = () => {
     dispatch(reset())
   }
 
+  const bgstyle: React.CSSProperties =
+  image ? {
+    backgroundImage: `url(${image})`,
+    backgroundSize: '100% 100%'
+  }
+  : {}
+
   return (
     <>
       <StyledIconText
         icon={PiRecycleLight}
         text='Reset'
-        iconClass='text-black'
-        txtClass='text-black pr-5 drop-shadow-custom-m-gray cursor-pointer'
+        {...defaultStyleIconText}
         onClick={() => doReset()}
       />
-      <div className={`drop-shadow-custom-m-gray flex flex-wrap w-1/3`}>
+      <div 
+      style={bgstyle}
+      className={
+        `drop-shadow-custom-m-gray flex flex-wrap w-1/3 mt-1 
+        ${image && 
+          `bg-cover bg-no-repeat bg-center 
+          `}
+        `}>
         {squares.map((s) => (
           <Cell key={s.id} id={s.id} />
         ))}
       </div>
-      {/* <CloseModal isOpen={isOpen} onClose={closeModal} children={<></>} /> */}
     </>
   );
 };

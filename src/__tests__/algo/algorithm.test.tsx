@@ -86,7 +86,6 @@ describe('Test the game logic', () => {
     const matrix = new Game(getSquares());
     matrix.SetPlayer('x', 1);
     matrix.SetPlayer('o', 2);
-    console.log('----> ' + JSON.stringify(matrix.GetWinner()));
   });
 });
 

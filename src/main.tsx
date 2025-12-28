@@ -5,7 +5,7 @@ import App from './App';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 import { persistStore } from 'redux-persist';
-import { store } from '../src/store/index';
+import { store } from '../src/store/game';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
