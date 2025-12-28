@@ -7,7 +7,7 @@ For the current version, the NPC is always X (sorry),
 and always makes the first move (sorry again). 
 
 The goal of the game is to get three squares, horizontal, vertical, or diagonal
-with your O, while also preventing the NPC from doing the same.
+with your O, while also preventing the NPC from doing the same with its X.
 
 The game can be reset for additional fun in statistical probabilities. The algorithm is not 
 smart. It's just random chance for where an NPC will move.
@@ -15,7 +15,7 @@ smart. It's just random chance for where an NPC will move.
 ## Features
 
 ### The Game Board
-The game board is a 3x3 matrix. When hovering over a cell, it will show a dotted line boarder
+The game board is a 3x3 matrix. When hovering over a cell, it will show a dotted line border
 when you are allowed to move there. When a game is won, the color of the Xs or Os will change
 color to indicate which series provides the win.
 
