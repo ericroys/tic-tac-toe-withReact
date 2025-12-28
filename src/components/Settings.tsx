@@ -1,17 +1,16 @@
 import { useEffect, useRef } from 'react';
-import { SiBasicattentiontoken, SiMinutemailer } from 'react-icons/si';
+import { AiOutlineCloseCircle } from "react-icons/ai";
+import { TfiSave } from "react-icons/tfi";
 import IconWithText from '../lib/styledIconText';
 import React from 'react';
 import { useForm } from 'react-hook-form';
-import { useAppDispatch, useAppSelector } from '../store/storeHooks';
-import { SelectAllSettings, setSetting } from '../model/settingsReducer';
-import { DefaultSettings, SettingsFields } from '../data/default_settings';
-import {
-  lblClass,
-  inputclass,
-  styledIconTextIco,
-  styledIconTextTxt,
-} from '../styling/styles';
+import { useAppDispatch, useAppSelector } from '../store/game/storeHooks';
+import { SelectAllSettings, setSetting } from '../store/reducers/settingsReducer';
+import { SettingsFields } from '../data/default_settings';
+import { defaultStyleIconText } from '../styling/styles';
+import { SettingInput } from './SettingInput';
+import { SettingInputFile } from './SettingInputFile';
+import { saveFile } from '../store/reducers/fileReducer';
 
 /*
   isOpen - function passed in from calling object to get whether
@@ -27,12 +26,16 @@ export type Props = {
 
 /* Application settings ui component */
 export const SettingsComponent = ({ isOpen, onClose, children }: Props) => {
+  //get settings from redux store
   const parameters = useAppSelector(SelectAllSettings);
+  //make store dispatch available
   const dispatch = useAppDispatch();
   const ref = useRef<HTMLDialogElement | null>(null);
   const t = useRef<number>(0); //deal with some unnecessary painting
-  const { register, getValues, handleSubmit } = useForm({});
+  //make react-form functions available
+  const { register, getValues, handleSubmit, setValue } = useForm({});
 
+  //make sure dialog displays only when appropriate
   useEffect(() => {
     const e = ref.current;
     if (e)
@@ -48,18 +51,15 @@ export const SettingsComponent = ({ isOpen, onClose, children }: Props) => {
     }
   };
 
-  const getDefaultSetting = (key: string) =>{
-    const t = DefaultSettings.find(s => s.key === key)
-    return t ? t.value : '';
-  }
-
+  //get a particular setting from the store
   const getSetting = (key: string) => {
-    if (!parameters) return null;
+    if (!parameters) return undefined;
     const res = parameters.filter((i) => i.key === key);
-    if (res.length > 0) return res[0].value;
-    return '';
+    if (res.length > 0 && res[0].value !== null) return res[0].value;
+    return undefined;
   };
 
+  //allow escape to close the dialog
   const keyDown = (event: React.KeyboardEvent<HTMLDialogElement>) => {
     if (event.key === 'Escape') {
       closeModal();
@@ -67,48 +67,71 @@ export const SettingsComponent = ({ isOpen, onClose, children }: Props) => {
   };
 
   const onSubmit = () => {
-    SettingsFields.forEach((f) => {
-      dispatch(
-        setSetting({
-          key: f.id,
-          value: getValues(f.id),
-        })
-      );
+    SettingsFields.forEach(async (f) => {
+      let v = getValues(f.id);
+      //if (!v) return;
+      //handle files a bit different
+      if (f.inputType === 'file') {
+        dispatch(
+          saveFile(
+            {id: f.id,
+              file: v instanceof File ? v as File : undefined
+            }
+          )
+        )
+
+        //handle regular input
+      } else {
+        dispatch(
+          setSetting({
+            key: f.id,
+            value: v,
+          })
+        );
+      }
     });
   };
 
+  //the component. Using t.current to prevent unecessary painting
   return t.current < 2 ? (
     <>
       <dialog
         ref={ref}
-        className='modal rounded-lg h-fit w-1/2 border-0'
+        className='modal sm:rounded-r-lg h-fit w-full sm:w-1/4 border-0'
         onKeyDown={keyDown}>
         <div className='w-fit h-fit flex flex-col p-5 rounded-lg items-center'>
           <form key={0} onSubmit={handleSubmit(onSubmit)}>
-            {SettingsFields.map((f, i) => {
-              return (
-                <div key={i}>
-                  <label key={i} htmlFor={f.id} className={lblClass}>
-                    {f.label}
-                  </label>
-                  <input
-                    defaultValue={getSetting(f.id) || getDefaultSetting(f.id)}
-                    key={'i' + i}
-                    type={f.inputType}
-                    id={f.id}
-                    {...register(f.id)}
-                    className={inputclass}
-                  />
-                </div>
-              );
-            })}
-            <div className='flex justify-center'>
+            <div className='flex flex-row justify-center'>
+              <div className={`flex flex-col pr-5`}>
+                {SettingsFields.filter(f => f.inputType !== 'file').map((x, idx) => {
+                  return (
+                    <SettingInput
+                      key={idx} label={x.label}
+                      id={x.id} register={register}
+                      defaultValue={getSetting(x.id)}
+                      type={x.inputType} />
+                  );
+                })}
+              </div>
+              <div className={`flex flex-col`}>
+                {SettingsFields.filter(f => f.inputType === 'file').map((x, idx) => {
+                  return (
+                    <SettingInputFile
+                      key={idx} label={x.label}
+                      id={x.id} register={register}
+                      setValue={setValue}
+                    />
+                  )
+                })}
+              </div>
+            </div>
+            <div className='flex justify-center mt-2'>
               <button type='submit'>
                 <IconWithText
-                  icon={SiMinutemailer}
-                  iconClass={styledIconTextIco}
+                  icon={TfiSave}
+                  {...defaultStyleIconText}
                   text={'Save'}
-                  txtClass={styledIconTextTxt}
+                  size={20}
                 />
               </button>
             </div>
@@ -116,10 +139,9 @@ export const SettingsComponent = ({ isOpen, onClose, children }: Props) => {
           <button>
             <IconWithText
               onClick={closeModal}
-              icon={SiBasicattentiontoken}
-              iconClass={styledIconTextIco}
+              icon={AiOutlineCloseCircle}
+              {...defaultStyleIconText}
               text={'Close'}
-              txtClass={styledIconTextTxt}
             />
           </button>
         </div>

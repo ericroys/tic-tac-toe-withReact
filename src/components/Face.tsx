@@ -3,8 +3,8 @@ import { FaRegCircle } from 'react-icons/fa';
 import { VscBlank } from 'react-icons/vsc';
 import { Players } from '../types';
 import { PLAYEROCOLOR, PLAYERXCOLOR, WINCOLOR } from '../data/default_settings';
-import { SelectSettingByKey } from '../model/settingsReducer';
-import { useAppSelector } from '../store/storeHooks';
+import { SelectSettingByKey } from '../store/reducers/settingsReducer';
+import { useAppSelector } from '../store/game/storeHooks';
 
 export type Props = {
   isWin: boolean;

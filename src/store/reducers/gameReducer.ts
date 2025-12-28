@@ -10,9 +10,9 @@ import {
   SelectablePlayers,
   Square,
   WinResponse,
-} from '../types';
-import { RootState } from '../store';
-import { Game } from './game';
+} from '../../types';
+import { RootState } from '../game';
+import { Game } from '../../model/game';
 
 const getSquares = () => {
   const s: Square[] = [];

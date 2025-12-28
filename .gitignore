@@ -1,3 +1,5 @@
+ts_tscompiled
+package-lock.json
 # Logs
 logs
 *.log

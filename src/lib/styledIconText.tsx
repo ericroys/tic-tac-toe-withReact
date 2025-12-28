@@ -13,19 +13,21 @@ export default function IconWithText({
   text,
   txtClass,
   onClick,
+  size
 }: StyledIconText) {
   //basic defaults for text and icon styling
   const default_tclass = 'ml-2 ';
-  const default_iclass = 'translate-y-1 ';
+  const default_iclass = 'fill-current stroke-current ';
 
   //optionally append if input received
   let tClass = txtClass ? default_tclass + txtClass : default_tclass;
   let iClass = iconClass ? default_iclass + iconClass : default_iclass;
 
   return (
-    <div onClick={onClick} className='flex align-baseline items-start'>
-      <StyledIcon icon={icon} className={iClass} />
-      <span className={tClass}>{text}</span>
+    <div onClick={onClick} 
+    className='flex align-baseline items-center'>
+      <StyledIcon icon={icon} className={iClass} size={size} />
+      <span className={tClass}>{text}</span>  
     </div>
   );
 }
